@@ -212,6 +212,17 @@ services:
       - 8888:8888
     volumes:
       - ./work:/home/jovyan/work
+      - ./dags:/home/jovyan/work/dags
+      - ./data:/home/jovyan/work/data
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.19.0
+    environment:
+      MLFLOW_TRACKING_URI: http://0.0.0.0:5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow
 
 volumes:
   postgres-db-volume:
