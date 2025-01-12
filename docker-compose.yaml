@@ -49,8 +49,10 @@ x-airflow-common:
   # In order to add custom dependencies or upgrade provider packages you can use your extended image.
   # Comment the image line, place your Dockerfile in the directory where you placed the docker-compose.yaml
   # and uncomment the "build" line below, Then run `docker-compose build` to build the images.
-  image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.10.4}
-  # build: .
+  # image: ${AIRFLOW_IMAGE_NAME:-apache/airflow:2.10.4}
+  build:
+    context: .
+    dockerfile: airflow.Dockerfile
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
@@ -75,6 +77,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
     - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+    - ${AIRFLOW_PROJ_DIR:-.}/data:/opt/airflow/data
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -212,13 +215,15 @@ services:
       - 8888:8888
     volumes:
       - ./work:/home/jovyan/work
-      - ./dags:/home/jovyan/work/dags
       - ./data:/home/jovyan/work/data
 
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.19.0
-    environment:
-      MLFLOW_TRACKING_URI: http://0.0.0.0:5000
+    command: >
+      mlflow server
+      --default-artifact-root /mlflow
+      --host 0.0.0.0
+      --port 5000
     ports:
       - "5000:5000"
     volumes:
