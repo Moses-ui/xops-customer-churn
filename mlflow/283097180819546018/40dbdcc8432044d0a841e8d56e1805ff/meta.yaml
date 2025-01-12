@@ -1,0 +1,15 @@
+artifact_uri: /mlflow/283097180819546018/40dbdcc8432044d0a841e8d56e1805ff/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '283097180819546018'
+lifecycle_stage: active
+run_id: 40dbdcc8432044d0a841e8d56e1805ff
+run_name: funny-shrike-825
+run_uuid: 40dbdcc8432044d0a841e8d56e1805ff
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1736691878005
+status: 1
+tags: []
+user_id: airflow
